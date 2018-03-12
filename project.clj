@@ -1,6 +1,6 @@
 (defproject takomo "0.1.0-SNAPSHOT"
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.908"]
+  :dependencies [[org.clojure/clojure "1.9.0"]
+                 [org.clojure/clojurescript "1.10.145"]
                  [reagent "0.7.0"]
                  [re-frame "0.10.5"]]
 
@@ -16,7 +16,7 @@
 
   :profiles
   {:dev
-   {:dependencies [[binaryage/devtools "0.9.4"]]
+   {:dependencies [[binaryage/devtools "0.9.9"]]
 
     :plugins      [[lein-figwheel "0.5.13"]]}}
 
