@@ -1,8 +1,14 @@
 (defproject takomo "0.1.0-SNAPSHOT"
-  :dependencies [[org.clojure/clojure "1.9.0"]
+  :dependencies [[cljs-ajax "0.7.3"]
+                 [day8.re-frame/http-fx "0.1.4"]
+                 [http-kit "2.2.0"]
+                 [metosin/jsonista "0.1.0"]
+                 [metosin/reitit "0.1.0"]
+                 [org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.10.145"]
                  [reagent "0.7.0"]
-                 [re-frame "0.10.5"]]
+                 [re-frame "0.10.5"]
+                 [ring "1.6.3"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
@@ -11,7 +17,7 @@
   :source-paths ["src/clj"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
-
+  :main takomo.core
   :figwheel {:css-dirs ["resources/public/css"]}
 
   :profiles
@@ -33,8 +39,7 @@
                     :asset-path           "js/compiled/out"
                     :source-map-timestamp true
                     :preloads             [devtools.preload]
-                    :external-config      {:devtools/config {:features-to-install :all}}
-                    }}
+                    :external-config      {:devtools/config {:features-to-install :all}}}}
 
     {:id           "min"
      :source-paths ["src/cljs"]
@@ -42,9 +47,4 @@
                     :output-to       "resources/public/js/compiled/app.js"
                     :optimizations   :advanced
                     :closure-defines {goog.DEBUG false}
-                    :pretty-print    false}}
-
-
-    ]}
-
-  )
+                    :pretty-print    false}}]})
