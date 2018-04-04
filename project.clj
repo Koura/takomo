@@ -1,5 +1,6 @@
 (defproject takomo "0.1.0-SNAPSHOT"
-  :dependencies [[cljs-ajax "0.7.3"]
+  :dependencies [[clj-http "3.8.0"]
+                 [cljs-ajax "0.7.3"]
                  [day8.re-frame/http-fx "0.1.4"]
                  [http-kit "2.2.0"]
                  [metosin/jsonista "0.1.0"]
@@ -22,7 +23,8 @@
 
   :profiles
   {:dev
-   {:dependencies [[binaryage/devtools "0.9.9"]]
+   {:dependencies [[binaryage/devtools "0.9.9"]
+                   [re-frisk "0.5.3"]]
 
     :plugins      [[lein-figwheel "0.5.13"]]}}
 
@@ -38,7 +40,7 @@
                     :pretty-print true
                     :asset-path           "js/compiled/out"
                     :source-map-timestamp true
-                    :preloads             [devtools.preload]
+                    :preloads             [devtools.preload re-frisk.preload]
                     :external-config      {:devtools/config {:features-to-install :all}}}}
 
     {:id           "min"

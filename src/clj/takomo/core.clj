@@ -1,5 +1,7 @@
 (ns takomo.core
-  (:require [org.httpkit.client :as http]
+  (:require [clj-http.client :as client]
+            [jsonista.core :as j]
+            [org.httpkit.client :as http]
             [reitit.core :as r]
             [reitit.ring :as ring]
             [ring.adapter.jetty :as jetty]))
@@ -15,11 +17,11 @@
 (defn get-org-urls [org endpoint]
   (let [org-url (str api-url org "/repos")]
     (if endpoint
-      (map #(str org-url "?page=" %) (range 1 (+ 1 (Integer/parseInt (last (clojure.string/split endpoint #"="))))))
-      (list org-url))))
+      (map #(str org-url "?page=" % "&access_token=" api-key) (range 1 (+ 1 (Integer/parseInt (last (clojure.string/split endpoint #"="))))))
+      (list (str org-url "?access_token=" api-key)))))
 
 (defn get-urls [orgs]
-  (let [responses (map http/get (map #(str api-url % "/repos") organisations))
+  (let [responses (map client/get (map #(str api-url % "/repos" "?access_token=" api-key) orgs))
         ends (map #(get-in % [:links :last :href]) responses)]
         (mapcat get-org-urls orgs ends)))
 
@@ -27,21 +29,19 @@
   (let [urls (get-urls organisations)
         promises (doall (map http/get urls))
         results (doall (map deref promises))]
-    results))
+    (j/write-value-as-string (flatten (mapv (comp j/read-value :body) results)))))
 
 (defn handler [request]
   {:status 200
+   :headers {"Access-Control-Allow-Origin" "*"
+             "Access-Control-Allow-Methods" "GET"}
    :body (get-repositories)})
 
-   (defn wrap [handler id]
-    (fn [request]
-      (update (handler request) :via (fnil conj '()) id)))
-
-  (def app
-    (ring/ring-handler
-      (ring/router
-        ["/api/repositories" handler])
-      (ring/create-default-handler)))
+(def app
+  (ring/ring-handler
+    (ring/router
+      ["/api/repositories" handler])
+    (ring/create-default-handler)))
 
 (defn -main []
   (jetty/run-jetty app {:port 8080}))
