@@ -1,6 +1,7 @@
 (defproject takomo "0.1.0-SNAPSHOT"
   :dependencies [[clj-http "3.8.0"]
                  [cljs-ajax "0.7.3"]
+                 [cljsjs/chartjs "2.7.0-0"]
                  [day8.re-frame/http-fx "0.1.4"]
                  [http-kit "2.2.0"]
                  [metosin/jsonista "0.1.0"]
